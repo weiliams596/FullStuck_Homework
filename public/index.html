@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server index page</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="index.js"></script>
+</head>
+<body>
+    <h1>Welcome to the server index page!</h1>
+    <h2>My users</h2>
+    <button onclick="getUsers()">Get users</button>
+    <div id="users"></div>
+    <script>
+        async function getUsers() {
+            try{
+                const response = await fetch('/users');
+                if(response.ok){
+                    const data = await response.json();
+                    const usersDiv = document.getElementById('users');
+                    usersDiv.innerHTML = '';
+                    data.data.forEach(user => {
+                        const userDiv = document.createElement('div');
+                        userDiv.innerHTML = `
+                            <h3>${user.name}</h3>
+                            <p>${user.age}</p>
+                        `;
+                        usersDiv.appendChild(userDiv);
+                    });
+                }else{
+                    const usersDiv = document.getElementById('users');
+                    usersDiv.innerHTML = 'Failed to fetch users';
+                }
+
+            }catch(error){
+                console.error(error);
+                const usersDiv = document.getElementById('users');
+                usersDiv.innerHTML = 'Failed to fetch users';
+            }
+        }
+    </script>
+</body>
+</html>
