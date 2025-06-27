@@ -47,6 +47,13 @@ app.get('/api/destinations', (req, res) => {
             else
                 return res.status(404).json({ message: 'Сіз берген ақпарат жоқ!' });
         }
+        if(querys.price){
+            const filteredCities = cities.filter(city => city.price <= parseInt(querys.price));
+            if (filteredCities.length > 0)
+                return res.json(filteredCities);
+            else
+                return res.status(400).json({ message: 'Сіз берген ақпарат жоқ!' });
+        }
     }
     return res.json(cities);
 });
@@ -138,8 +145,15 @@ app.put('/api/destinations/:id', (req, res) => {
                         }
                     }
                     const index = cities.indexOf(city);
-                    cities[index] = updatedCity;
-                    return res.json(updatedCity);
+                    const update = {... city};
+                    console.log(update);
+                    for(let key in updatedCity){
+                        update[key]=updatedCity[key];
+                    }
+                    update.price=parseInt(update.price);
+                    console.log(update);
+                    cities[index] = update;
+                    return res.json({ message: 'Ақпараты өзгертілді!', updated: update , old: city });
                 }
             }
         }
