@@ -5,7 +5,11 @@
   "main": "server.js",
   "scripts": {
     "server": "nodemon src/server.js",
-    "task1":"nodemon src/tasks/task1.js"
+    "task1": "nodemon src/tasks/task1.js",
+    "task2": "nodemon src/tasks/task2.js",
+    "task3": "nodemon src/tasks/task3.js",
+    "task4": "nodemon src/tasks/task4.js",
+    "task5": "nodemon src/tasks/task5.js"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +20,7 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "pg": "^8.16.3"
   }
 }
