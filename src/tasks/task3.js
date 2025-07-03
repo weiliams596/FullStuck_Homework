@@ -6,9 +6,8 @@ const PORT = 3000;
 
 app.use(express.json());
 
-app.post('/users',async(req,res)=>{
+const validateUser = (req, res, next) => {
   let userQuery = req.body;
-  console.log(userQuery);
   if(typeof userQuery !== 'object'){
     userQuery = req.query;
   }
@@ -21,6 +20,13 @@ app.post('/users',async(req,res)=>{
   if(userQuery.username.length < 3){
     return res.status(400).send('Name should be at least 3 characters long');
   }
+  req.userQuery = userQuery;
+  next();
+};
+
+app.post('/users',validateUser,async(req,res)=>{
+  let userQuery = req.userQuery;
+  console.log(userQuery);
   let sqlQuery = 'SELECT * FROM users WHERE username=$1 AND email=$2';
   try{
     const result = await pool.query(sqlQuery,[userQuery.username,userQuery.email]);
@@ -33,7 +39,7 @@ app.post('/users',async(req,res)=>{
     }
   }catch(error){
     console.error(error);
-    res.status(500).send('Something went wrong');
+    res.status(500).send({message:error.detail.toLocalString()});
   }
 });
 
